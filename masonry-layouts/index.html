@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "@faker-js/faker": "https://esm.sh/@faker-js/faker@8.0.2"
+      }
+    }
+  </script>
+
+</head>
+
+<body>
+
+  <!-- See: https://github.com/askides/react-plock/blob/v3.0.2/packages/react-plock/src/Plock.tsx -->
+
+  <div id="app"></div>
+
+  <script type="module">
+    import { faker } from '@faker-js/faker';
+
+    import { Masonry } from './masonry-layouts.js'
+    import { onMediaChange } from './onMediaChange.js'
+
+    const imagesUrls = Array.from({ length: 10 }).map(() => faker.image.url({ width: faker.string.numeric({ length: 3, allowLeadingZeros: false }), height: faker.string.numeric({ length: 3, allowLeadingZeros: false }) }));
+
+    // document.getElementById('app').innerHTML = Masonry({ items: imagesUrls, config: { columns: 3, gap: 8 }, render(item, index) { return `<img data-index="${item}" src="${item}" style="width: 100%; height: auto" />` } });
+
+    onMediaChange(
+    {
+        columns: [1, 2, 3],
+        gap: [24, 12, 6],
+        media: [640, 768, 1024],
+    }  
+    , ({ columns, gap }) => {
+      console.log('[onMediaChange]', { columns, gap })
+
+      document.getElementById('app').innerHTML = Masonry({ items: imagesUrls, config: { columns, gap }, render(item, index) { return `<img data-index="${item}" src="${item}" style="width: 100%; height: auto" />` } });
+    })
+  </script>
+
+</body>
+
+</html>
