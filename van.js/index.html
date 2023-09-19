@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "vanjs-core": "https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-0.11.9.min.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  
+  <script type="module">
+
+    import van from 'vanjs-core';
+
+    const { tags } = van
+
+    console.log('[van]', van)
+
+    const Hello = () => tags.div(
+      tags.p("👋Hello"),
+      tags.ul(
+        tags.li("🗺️World"),
+        tags.li(tags.a({href: "https://vanjs.org/"}, "🍦VanJS")),
+      ),
+    )
+
+    van.add(document.body, Hello())
+
+
+    ///////////////////////////////////////
+
+
+    const Counter = () => {
+    const counter = van.state(0)
+      return tags.div(
+        "❤️ ", counter, " ",
+        tags.button({onclick: () => ++counter.val}, "👍"),
+        tags.button({onclick: () => --counter.val}, "👎"),
+      )
+    }
+
+    van.add(document.body, Counter())
+  </script>
+</body>
+</html>

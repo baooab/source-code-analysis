@@ -2,7 +2,6 @@ source code: https://github.com/askides/react-plock/blob/v3.0.2/packages/react-p
 
 The 1kB Masonry Grid Implementation.
 
-
 Knowledge points:
 
 - Use CSS Grid layouts to implement Masonry layouts
