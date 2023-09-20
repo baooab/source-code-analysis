@@ -18,34 +18,66 @@
 
     import van from 'vanjs-core';
 
-    const { tags } = van
+    // console.log('[van]', van)
 
-    console.log('[van]', van)
+    // const Hello = () => van.tags.div(
+    //   van.tags.p("👋Hello"),
+    //   van.tags.ul(
+    //     van.tags.li("🗺️World"),
+    //     van.tags.li(van.tags.a({href: "https://vanjs.org/"}, "🍦VanJS")),
+    //   ),
+    // )
 
-    const Hello = () => tags.div(
-      tags.p("👋Hello"),
-      tags.ul(
-        tags.li("🗺️World"),
-        tags.li(tags.a({href: "https://vanjs.org/"}, "🍦VanJS")),
-      ),
-    )
-
-    van.add(document.body, Hello())
+    // van.add(document.body, Hello())
 
 
     ///////////////////////////////////////
 
 
-    const Counter = () => {
-    const counter = van.state(0)
-      return tags.div(
-        "❤️ ", counter, " ",
-        tags.button({onclick: () => ++counter.val}, "👍"),
-        tags.button({onclick: () => --counter.val}, "👎"),
-      )
+    // const Counter = () => {
+    // const counter = van.state(0)
+    //   return tags.div(
+    //     "❤️ ", counter, " ",
+    //     tags.button({onclick: () => ++counter.val}, "👍"),
+    //     tags.button({onclick: () => --counter.val}, "👎"),
+    //   )
+    // }
+
+    // van.add(document.body, Counter())
+  </script>
+
+  <script>
+    const isProps =  (arg) => (arg != undefined && (Object.getPrototypeOf(arg) === Object.prototype))
+
+    const tags = new Proxy((name, ...args) => {4
+      const [props, ...children] = isProps(args[0]) ? args : [{}, ...args] 
+
+      let dom = document.createElement(name)
+      Object.entries(props ?? {}).forEach(([k, v]) => {
+      let setter = dom[k] !== undefined ? v => dom[k] = v : v => dom.setAttribute(k, v)
+      setter(v)
+    })
+      return add(dom, ...children)
+    }, { get: (tag, name) => tag.bind(undefined, name) })
+
+    let toDom = v => v.nodeType ? v : new Text(v)
+
+    let add = (dom, ...children) => {
+      children.forEach(child => dom.appendChild(toDom(child)))
+      return dom
     }
 
-    van.add(document.body, Counter())
+    add(
+        document.body,
+        tags.div(
+          tags.p("👋Hello"),
+          tags.ul(
+            tags.li("🗺️World"),
+            tags.li(tags.a({href: "https://vanjs.org/"}, "🍦VanJS")),
+          ),
+        )
+    )
   </script>
+
 </body>
 </html>
